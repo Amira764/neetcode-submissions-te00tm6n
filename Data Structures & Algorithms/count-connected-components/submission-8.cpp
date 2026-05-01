@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int countComponents(int n, vector<vector<int>>& edges)
+    {
+        unordered_map<int, unordered_set<int>> graph = buildGraph(n, edges);
+        int count = 0;
+        unordered_set<int> is_visited;
+        for (int i = 0; i<n; i++)
+        {
+            if(explore(i, graph, is_visited)) count += 1;
+        }
+        return count;
+    }
+
+    bool explore(int node, unordered_map<int, unordered_set<int>>& graph, unordered_set<int>& is_visited)
+    {
+        if(is_visited.contains(node)) return false;
+        
+        is_visited.insert(node);
+
+        for (const auto& neighbour: graph[node])
+        {
+            bool whatever = explore(neighbour, graph, is_visited);
+        }
+
+        return true;
+    }
+
+    unordered_map<int, unordered_set<int>> buildGraph(int n, vector<vector<int>>& edges)
+    {
+        unordered_map<int, unordered_set<int>> adj_list;
+        for (vector<int>& edge : edges) 
+        {
+            adj_list[edge[0]].insert(edge[1]);
+            adj_list[edge[1]].insert(edge[0]);
+        }
+        return adj_list;
+    }
+};
+
+
